@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Drop extends ApplicationAdapter {
 	private Texture droplet;
-	private Texture bucket;
+	private Texture bucketImage;
+
+	private Rectangle bucket;
 
     private Sound dropSound;
 	private Music rainMusic;
@@ -21,8 +24,19 @@ public class Drop extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
+
+		batch = new SpriteBatch();
+
 		droplet = new Texture(Gdx.files.internal("droplet.png"));
-		bucket = new Texture(Gdx.files.internal("bucket.png"));
+		bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+
+		bucket = new Rectangle();
+		bucket.x = 800 / 2 - 64 / 2;
+		bucket.y = 20;
+		bucket.width = 64;
+		bucket.height = 64;
 
         dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
@@ -33,17 +47,21 @@ public class Drop extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//		batch.begin();
-//		batch.draw(img, 0, 0);
-//		batch.end();
+
+		camera.update();
+
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		batch.draw(bucketImage, bucket.x, bucket.y);
+		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		droplet.dispose();
-		bucket.dispose();
+		bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
 	}
