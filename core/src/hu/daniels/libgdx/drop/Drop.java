@@ -131,6 +131,7 @@ public class Drop extends ApplicationAdapter {
 		bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
+        batch.dispose();
 	}
 
 	private void spawnRaindrop() {
