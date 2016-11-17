@@ -1,4 +1,5 @@
 */build
 /.idea
 /.gradle
-/libs
+*/libs
+local.properties
